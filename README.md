@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+# desafio-makeweb
+=======
+>>>>>>> 02cb2e7 (estrutura corrigida)
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -48,3 +54,7 @@ export default tseslint.config({
   },
 })
 ```
+<<<<<<< HEAD
+=======
+>>>>>>> e1d5d34 (configuracao inicial do projeto makeweb)
+>>>>>>> 02cb2e7 (estrutura corrigida)
