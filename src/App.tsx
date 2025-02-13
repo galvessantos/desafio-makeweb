@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Movie } from "./types/movie";
 import { MovieList } from "./components/MovieList";
+import { MovieDetails } from "./pages/MovieDetails";
 import { MovieForm } from "./components/MovieForm";
 import { Modal } from "./components/Modal";
 
@@ -20,10 +22,8 @@ export default function App() {
           anoLancamento: filme.anolancamento,
           genero: filme.genero,
           avaliacao: filme.avaliacao,
-          urlImagem: filme.urlimagem
+          urlimagem: filme.urlimagem,
         }));
-
-        console.log("Filmes ajustados para o frontend:", filmesFormatados);
         setMovies(filmesFormatados);
       })
       .catch((error) => console.error("Erro ao buscar filmes:", error));
@@ -50,21 +50,20 @@ export default function App() {
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold text-gray-900">Gerenciador de Filmes</h1>
             <button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-700 transition"
-            >
-              Adicionar Filme
+                onClick={() => setIsModalOpen(true)}
+                className="bg-indigo-600 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-700 transition flex items-center gap-2"
+              >
+                <span className="text-lg">+</span> Adicionar Filme
             </button>
           </div>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {movies.length > 0 ? (
-          <MovieList movies={movies} />
-        ) : (
-          <p className="text-center text-gray-600">Nenhum filme encontrado.</p>
-        )}
+        <Routes>
+          <Route path="/" element={<MovieList movies={movies} />} />
+          <Route path="/filme/:id" element={<MovieDetails />} />
+        </Routes>
       </main>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

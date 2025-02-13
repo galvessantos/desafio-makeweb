@@ -4,7 +4,7 @@ export interface Movie {
     descricao: string;
     anoLancamento: number;
     diretor: string;
-    urlImagem: string;
+    urlimagem: string;
     avaliacao: number;
     genero: string;
   }

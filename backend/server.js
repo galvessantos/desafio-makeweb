@@ -34,6 +34,25 @@ app.get("/filmes", (req, res) => {
   });
 });
 
+app.get("/filmes/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = "SELECT * FROM filmes WHERE id = ?";
+
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: "Erro ao buscar filme" });
+      return;
+    }
+
+    if (result.length === 0) {
+      res.status(404).json({ error: "Filme não encontrado" });
+      return;
+    }
+
+    res.json(result[0]);
+  });
+});
+
 app.post("/filmes", (req, res) => {
   const { nome, descricao, diretor, anolancamento, genero, avaliacao, urlimagem } = req.body;
   if (!nome || !descricao || !diretor || !anolancamento || !genero || !avaliacao || !urlimagem) {
