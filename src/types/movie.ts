@@ -1,8 +1,8 @@
 export interface Movie {
     id: number;
-    titulo: string;
+    nome: string;
     descricao: string;
-    anoLancamento: number;
+    anolancamento: number;
     diretor: string;
     urlimagem: string;
     avaliacao: number;
