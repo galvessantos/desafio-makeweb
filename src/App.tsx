@@ -5,10 +5,13 @@ import { MovieList } from "./components/MovieList";
 import { MovieDetails } from "./pages/MovieDetails";
 import { MovieForm } from "./components/MovieForm";
 import { Modal } from "./components/Modal";
+import Pagination from "./components/Pagination";
 
 export default function App() {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [moviesPerPage] = useState(8);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
@@ -23,6 +26,12 @@ export default function App() {
     const filteredMovies = movies.filter((movie) =>
         movie.nome?.toLowerCase().includes(searchTerm?.toLowerCase() || "")
     );
+
+    const indexOfLastMovie = currentPage * moviesPerPage;
+    const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
+    const currentMovies = filteredMovies.slice(indexOfFirstMovie, indexOfLastMovie);
+
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     const handleAddMovie = (movie: Omit<Movie, "id">) => {
         fetch("http://localhost:3001/filmes", {
@@ -94,16 +103,23 @@ export default function App() {
 
             <main className="flex-grow max-w-7xl mx-auto py-8">
                 <Routes>
-                    <Route path="/" element={<MovieList movies={filteredMovies} />} />
+                    <Route path="/" element={<MovieList movies={currentMovies} />} />
                     <Route
                         path="/filme/:id"
                         element={<MovieDetails onMovieDeleted={handleMovieDeleted} onDelete={handleDeleteMovie} />}
                     />
                 </Routes>
+                {location.pathname === "/" && (
+                    <Pagination
+                        moviesPerPage={moviesPerPage}
+                        totalMovies={filteredMovies.length}
+                        paginate={paginate}
+                    />
+                )}
             </main>
 
             <footer className="bg-gray-200 py-4 text-center w-full mt-auto">
-                <p className="text-gray-600">&copy; {new Date().getFullYear()} Gerenciador de Filmes</p>
+                <p className="text-gray-600">&copy; {new Date().getFullYear()} - Gabriel Alves - Gerenciador de Filmes</p>
             </footer>
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
